@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Spider Boy - Spidey Card</title>
+    <title>Spidey Card</title>
     
     <!-- Open Graph / Social Media Thumbnail Meta Tags -->
-    <meta property="og:title" content="Spider Boy">
-    <meta property="og:description" content="a little piece of us. spidey-card special edition.">
+    <meta property="og:title" content="Spidey Card">
+    <meta property="og:description" content="a little piece of us. A special spidey-card edition.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://by-luneva.github.io/spidey-card/">
     <meta property="og:image" content="https://by-luneva.github.io/spidey-card/thumbnail.png">
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Spider Boy">
-    <meta name="twitter:description" content="a little piece of us. spidey-card special edition.">
+    <meta name="twitter:title" content="Spidey Card">
+    <meta name="twitter:description" content="a little piece of us. A special spidey-card edition.">
     <meta name="twitter:image" content="https://by-luneva.github.io/spidey-card/thumbnail.png">
 
     <style>
@@ -234,7 +234,7 @@
     <div id="loading-screen">
         <div class="loader-content">
             <div class="loader-spinner"></div>
-            <div class="loader-text">loading spider boy...</div>
+            <div class="loader-text">loading spidey card...</div>
             <div class="loader-bar-container">
                 <div class="loader-bar" id="loaderBar">
                     <div class="loader-thumb"><img src="slide4_item1.png" alt="thumb" loading="lazy"></div>
@@ -391,7 +391,7 @@
         let typingSessionId = 0;
         let globalCardScale = 1;
 
-        // === 1. RESPONSIVE SCALE MANAGER (ADAPTIF HP & LAPTOP) ===
+        // === 1. RESPONSIVE SCALE MANAGER (MENTOK ATAS-BAWAH DI LAPTOP) ===
         function applyDynamicScale() {
             const card = document.getElementById('mainCard');
             const loader = document.querySelector('.loader-content');
@@ -399,9 +399,9 @@
             const w = window.innerWidth;
             const h = window.innerHeight;
             
-            // Jika di laptop/landscape, sesuaikan skala berdasarkan tinggi layar agar tidak mentok atas-bawah
             if (w > h) {
-                globalCardScale = Math.min(w / 384, (h / 273) * 0.92);
+                // Skala dihitung penuh berdasarkan tinggi layar agar card mentok ke atas dan bawah layar laptop
+                globalCardScale = h / 273;
             } else {
                 globalCardScale = w / 384;
             }
