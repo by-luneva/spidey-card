@@ -22,7 +22,7 @@
         /* === 1. CONFIGURATION VARIABLES === */
         :root {
             --songs-top: 15%; --songs-left: 42%; --songs-width: 40%; --songs-gap: -38px;
-            --bar-width: 87%; --bar-height: 48px; --bar-margin-top: -55px; --bar-offset-x: 9px; --bar-btn: 24px; --bar-gap: 8px;
+            --bar-width: 87%; --bar-height: 48px; --bar-margin-top: -57px; --bar-offset-x: 9px; --bar-btn: 24px; --bar-gap: 8px;
             --letter-top: 31%; --letter-left: 29%; --letter-width: 65%; --letter-height: 100%; --letter-size: 0.48rem; --letter-line: 1.2;
         }
 
@@ -391,14 +391,20 @@
         let typingSessionId = 0;
         let globalCardScale = 1;
 
-        // === 1. RESPONSIVE SCALE MANAGER (FULL KANAN KIRI) ===
+        // === 1. RESPONSIVE SCALE MANAGER (ADAPTIF HP & LAPTOP) ===
         function applyDynamicScale() {
             const card = document.getElementById('mainCard');
             const loader = document.querySelector('.loader-content');
             const voiceModalContent = document.querySelector('.voice-modal-content');
             const w = window.innerWidth;
+            const h = window.innerHeight;
             
-            globalCardScale = w / 384;
+            // Jika di laptop/landscape, sesuaikan skala berdasarkan tinggi layar agar tidak mentok atas-bawah
+            if (w > h) {
+                globalCardScale = Math.min(w / 384, (h / 273) * 0.92);
+            } else {
+                globalCardScale = w / 384;
+            }
             
             if(card) card.style.transform = `translate(-50%, -50%) scale(${globalCardScale})`;
             if(loader) loader.style.transform = `scale(${globalCardScale})`;
@@ -427,7 +433,7 @@
             setTimeout(type, 450);
         }
 
-        // === 3. ASSET LOADER ===
+        // === 3. ASSET LOADER (MENUNGGU SEMUA ITEM SELESAI) ===
         window.addEventListener('DOMContentLoaded', () => {
             const images = document.querySelectorAll('img');
             const loaderBar = document.getElementById('loaderBar');
@@ -453,20 +459,29 @@
                 }
             }
 
-            const safetyTimer = setTimeout(finishLoading, 2000);
             function updateProgress() {
                 if (isFinished) return;
                 loadedAssets++;
                 let percentage = Math.min(100, Math.floor((loadedAssets / Math.max(1, totalAssets)) * 100));
                 if (loaderBar) loaderBar.style.width = percentage + '%';
                 if (loaderPercentage) loaderPercentage.innerText = percentage + '%';
-                if (loadedAssets >= totalAssets) { clearTimeout(safetyTimer); setTimeout(finishLoading, 300); }
+                if (loadedAssets >= totalAssets) {
+                    setTimeout(finishLoading, 300);
+                }
             }
 
-            if (totalAssets === 0) { clearTimeout(safetyTimer); setTimeout(finishLoading, 300); return; }
+            if (totalAssets === 0) {
+                setTimeout(finishLoading, 300);
+                return;
+            }
+
             images.forEach(img => {
-                if (img.complete) updateProgress();
-                else { img.addEventListener('load', updateProgress, { once: true }); img.addEventListener('error', updateProgress, { once: true }); }
+                if (img.complete) {
+                    updateProgress();
+                } else {
+                    img.addEventListener('load', updateProgress, { once: true });
+                    img.addEventListener('error', updateProgress, { once: true });
+                }
             });
         });
 
